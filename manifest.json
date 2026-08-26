@@ -9,7 +9,7 @@
       "owner": "JustMike13",
       "overview": "Automatically generates trickplay (preview) thumbnails for movies and episodes that are unwatched by at least one selected user.",
       "category": "Library",
-      "targetAbi": "10.9.0.0",
+      "targetAbi": "10.11.0.0",
       "artifactUrl": "https://github.com/JustMike13/SelectiveTrickplay/releases/download/v1.0.0/SelectiveTrickplay.zip",
       "changelog": "Initial release - Core functionality for selective trickplay generation, multi-user watch status checking, scheduled task with configurable users, comprehensive logging, and plugin configuration UI support."
     }
