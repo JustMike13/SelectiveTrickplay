@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <RootNamespace>SelectiveTrickplay</RootNamespace>
     <AssemblyName>SelectiveTrickplay</AssemblyName>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -10,8 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- Reference Jellyfin server assemblies from your local Jellyfin installation -->
-    <!-- Update these paths to match your Jellyfin installation location -->
+    <!-- Reference Jellyfin server assemblies from local installation -->
     <Reference Include="MediaBrowser.Controller">
       <HintPath>C:\Program Files\Jellyfin\Server\MediaBrowser.Controller.dll</HintPath>
       <Private>False</Private>
@@ -22,6 +21,22 @@
     </Reference>
     <Reference Include="MediaBrowser.Common">
       <HintPath>C:\Program Files\Jellyfin\Server\MediaBrowser.Common.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection">
+      <HintPath>C:\Program Files\Jellyfin\Server\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
+      <HintPath>C:\Program Files\Jellyfin\Server\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.Abstractions">
+      <HintPath>C:\Program Files\Jellyfin\Server\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Jellyfin.Database.Implementations">
+      <HintPath>C:\Program Files\Jellyfin\Server\Jellyfin.Database.Implementations.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>

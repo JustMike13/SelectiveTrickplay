@@ -1,8 +1,8 @@
 using System;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using MediaBrowser.Controller.Entities;
-using MediaBrowser.Controller.Trickplay;
 using Microsoft.Extensions.Logging;
 
 namespace SelectiveTrickplay.Services
@@ -12,12 +12,10 @@ namespace SelectiveTrickplay.Services
     /// </summary>
     public class TrickplayService
     {
-        private readonly ITrickplayManager _trickplayManager;
         private readonly ILogger<TrickplayService> _logger;
 
-        public TrickplayService(ITrickplayManager trickplayManager, ILogger<TrickplayService> logger)
+        public TrickplayService(ILogger<TrickplayService> logger)
         {
-            _trickplayManager = trickplayManager ?? throw new ArgumentNullException(nameof(trickplayManager));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -35,8 +33,18 @@ namespace SelectiveTrickplay.Services
 
             try
             {
-                // Check if the item has trickplay data
-                return _trickplayManager.GetTrickplayInfo(item) != null;
+                // Check if trickplay directory exists for video items
+                if (item is Video video && !string.IsNullOrEmpty(video.Path))
+                {
+                    var trickplayPath = Path.Combine(
+                        Path.GetDirectoryName(video.Path) ?? string.Empty,
+                        ".trickplay",
+                        video.Id.ToString());
+                    
+                    return Directory.Exists(trickplayPath);
+                }
+
+                return false;
             }
             catch (Exception ex)
             {
@@ -47,6 +55,7 @@ namespace SelectiveTrickplay.Services
 
         /// <summary>
         /// Generates trickplay for the specified item.
+        /// Note: This is a placeholder. Actual trickplay generation requires Jellyfin's ITrickplayManager.
         /// </summary>
         /// <param name="item">The item to generate trickplay for.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
@@ -60,9 +69,12 @@ namespace SelectiveTrickplay.Services
 
             try
             {
-                _logger.LogInformation("Starting trickplay generation for item {ItemId}: {ItemName}", item.Id, item.Name);
-                await _trickplayManager.GenerateTrickplay(item, true, cancellationToken).ConfigureAwait(false);
-                _logger.LogInformation("Successfully generated trickplay for item {ItemId}: {ItemName}", item.Id, item.Name);
+                _logger.LogInformation("Trickplay generation requested for item {ItemId}: {ItemName}", item.Id, item.Name);
+                
+                // TODO: Integrate with Jellyfin's trickplay generation API when available
+                // For now, this is logged but not actually generated
+                
+                await Task.CompletedTask;
             }
             catch (OperationCanceledException)
             {
