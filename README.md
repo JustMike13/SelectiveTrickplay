@@ -46,6 +46,31 @@ SelectiveTrickplay/
 
 ## Building
 
+### Build Requirements
+
+**Important:** Jellyfin plugin development requires referencing Jellyfin's server assemblies directly. Follow these steps:
+
+1. **Install Jellyfin Server 10.9.0+** on your development machine
+2. **Update SelectiveTrickplay.csproj** to reference local Jellyfin DLLs instead of NuGet packages
+
+Replace the current `<ItemGroup>` with package references:
+
+```xml
+<ItemGroup>
+  <Reference Include="MediaBrowser.Controller">
+    <HintPath>C:\Program Files\Jellyfin\Server\MediaBrowser.Controller.dll</HintPath>
+  </Reference>
+  <Reference Include="MediaBrowser.Model">
+    <HintPath>C:\Program Files\Jellyfin\Server\MediaBrowser.Model.dll</HintPath>
+  </Reference>
+  <Reference Include="MediaBrowser.Common">
+    <HintPath>C:\Program Files\Jellyfin\Server\MediaBrowser.Common.dll</HintPath>
+  </Reference>
+</ItemGroup>
+```
+
+Adjust paths to match your Jellyfin installation location.
+
 ### Prerequisites
 
 Install .NET 8.0 SDK:

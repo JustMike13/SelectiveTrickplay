@@ -1,5 +1,5 @@
 using System;
-using Jellyfin.Plugin.Common;
+using System.Collections.Generic;
 using MediaBrowser.Common.Configuration;
 using MediaBrowser.Common.Plugins;
 using MediaBrowser.Model.Plugins;

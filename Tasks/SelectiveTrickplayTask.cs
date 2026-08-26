@@ -45,6 +45,11 @@ namespace SelectiveTrickplay.Tasks
         public string Name => "Generate Trickplay for Unwatched Content";
 
         /// <summary>
+        /// Gets the task key/ID.
+        /// </summary>
+        public string Key => "SelectiveTrickplayGenerator";
+
+        /// <summary>
         /// Gets the task description.
         /// </summary>
         public string Description => "Generates trickplay thumbnails for movies and episodes that are unwatched by at least one selected user.";

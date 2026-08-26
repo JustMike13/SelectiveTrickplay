@@ -10,10 +10,20 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Jellyfin.Common" Version="10.9.0" />
-    <PackageReference Include="MediaBrowser.Controller" Version="10.9.0" />
-    <PackageReference Include="MediaBrowser.Model" Version="10.9.0" />
-    <PackageReference Include="MediaBrowser.Common" Version="10.9.0" />
+    <!-- Reference Jellyfin server assemblies from your local Jellyfin installation -->
+    <!-- Update these paths to match your Jellyfin installation location -->
+    <Reference Include="MediaBrowser.Controller">
+      <HintPath>C:\Program Files\Jellyfin\Server\MediaBrowser.Controller.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="MediaBrowser.Model">
+      <HintPath>C:\Program Files\Jellyfin\Server\MediaBrowser.Model.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="MediaBrowser.Common">
+      <HintPath>C:\Program Files\Jellyfin\Server\MediaBrowser.Common.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
 
 </Project>
