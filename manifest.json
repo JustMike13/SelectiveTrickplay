@@ -1,15 +1,15 @@
 [
   {
-    "name": "Selective Trickplay Generator",
-    "description": "Generates trickplay only if any selected user has not watched the movie or episode, and trickplay does not already exist.",
-    "guid": "12345678-1234-1234-1234-123456789012",
-    "owner": "JustMike13",
-    "overview": "Automatically generates trickplay (preview) thumbnails for movies and episodes that are unwatched by at least one selected user.",
-    "category": "Library",
-    "targetAbi": "10.11.0.0",
-    "artifactUrl": "https://github.com/JustMike13/SelectiveTrickplay/releases/download/v1.0.0/SelectiveTrickplay.zip",
-    "changelog": "Initial release - Core functionality for selective trickplay generation, multi-user watch status checking, scheduled task with configurable users, comprehensive logging, and plugin configuration UI support.",
-    "version": "1.0.0",
-    "imageUrl": "https://raw.githubusercontent.com/JustMike13/SelectiveTrickplay/main/icon.png"
+    "Name": "Selective Trickplay Generator",
+    "Description": "Generates trickplay only if any selected user has not watched the movie or episode, and trickplay does not already exist.",
+    "Guid": "12345678-1234-1234-1234-123456789012",
+    "Owner": "JustMike13",
+    "Overview": "Automatically generates trickplay (preview) thumbnails for movies and episodes that are unwatched by at least one selected user.",
+    "Category": "Library",
+    "TargetAbi": "10.11.0.0",
+    "ArtifactUrl": "https://github.com/JustMike13/SelectiveTrickplay/releases/download/v1.0.0/SelectiveTrickplay.zip",
+    "Changelog": "Initial release - Core functionality for selective trickplay generation, multi-user watch status checking, scheduled task with configurable users, comprehensive logging, and plugin configuration UI support.",
+    "Version": "1.0.0",
+    "ImageUrl": "https://raw.githubusercontent.com/JustMike13/SelectiveTrickplay/main/icon.png"
   }
 ]
