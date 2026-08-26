@@ -1,0 +1,11 @@
+{
+  "name": "Selective Trickplay Generator",
+  "description": "Generates trickplay only if any selected user has not watched the movie or episode, and trickplay does not already exist.",
+  "id": "selective-trickplay",
+  "version": "1.0.0",
+  "targetAbi": "10.9.0.0",
+  "owner": "Your Organization",
+  "overview": "This plugin automatically generates trickplay thumbnails for unwatched content based on selected users.",
+  "category": "Library",
+  "documentation": "https://github.com/example/selective-trickplay"
+}

@@ -1,0 +1,30 @@
+# Build outputs
+bin/
+obj/
+
+# IDE
+.vs/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Dependencies
+packages/
+.nuget/
+
+# Test results
+TestResults/
+
+# Coverage
+coverage/
+*.coverage
+
+# Build artifacts
+*.dll
+*.exe
+*.pdb
+
+# Project-specific
+UnwatchedTrickplay.zip

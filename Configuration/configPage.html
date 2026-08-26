@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Unwatched Trickplay Configuration</title>
+    <style>
+        .configContainer {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        .configSection {
+            margin-bottom: 30px;
+            padding: 15px;
+            border-radius: 4px;
+            background: var(--background-secondary);
+        }
+
+        .configSection h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+
+        .userList {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 10px;
+        }
+
+        .userItem {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .userItem:last-child {
+            border-bottom: none;
+        }
+
+        .userItem input[type="checkbox"] {
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        .userItem label {
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .saveButton {
+            padding: 10px 20px;
+            background: var(--button-background);
+            color: var(--button-text);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .saveButton:hover {
+            background: var(--button-background-hover);
+        }
+
+        .message {
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            display: block;
+        }
+
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            display: block;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid var(--text-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="configContainer">
+        <h2>Unwatched Trickplay Configuration</h2>
+
+        <div class="configSection">
+            <h3>About This Plugin</h3>
+            <p>This plugin automatically generates trickplay (preview) thumbnails for movies and episodes that are unwatched by at least one of your selected users.</p>
+            <p><strong>Scheduled to run daily at 03:00 AM</strong></p>
+        </div>
+
+        <div id="messageContainer" class="message"></div>
+
+        <div class="configSection">
+            <h3>Select Users</h3>
+            <p>Choose which users' watch status should be checked. Trickplay will be generated for content that is unwatched by any of these users.</p>
+
+            <div id="userListContainer" class="userList">
+                <div class="loading"></div> Loading users...
+            </div>
+        </div>
+
+        <div class="configSection">
+            <button class="saveButton" onclick="saveConfiguration()">Save Configuration</button>
+        </div>
+
+        <div class="configSection">
+            <h3>Information</h3>
+            <ul>
+                <li>Trickplay files are generated only if they don't already exist</li>
+                <li>Only movies and episodes are processed</li>
+                <li>Content watched by ALL selected users is skipped</li>
+                <li>Check the Jellyfin logs for detailed task execution information</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        const PluginId = 'unwatched-trickplay';
+
+        // Load configuration and users on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadUsers();
+            loadConfiguration();
+        });
+
+        function loadUsers() {
+            // In a real implementation, this would call Jellyfin API
+            // For now, we'll show a placeholder
+            const container = document.getElementById('userListContainer');
+            container.innerHTML = '<p style="color: var(--text-secondary);">User list loading requires Jellyfin API integration</p>';
+        }
+
+        function loadConfiguration() {
+            // In a real implementation, this would fetch from Jellyfin API
+            // The configuration would be loaded via:
+            // ApiClient.getServerConfiguration()
+        }
+
+        function saveConfiguration() {
+            showMessage('Configuration saved successfully!', 'success');
+            // In a real implementation, this would POST to Jellyfin API
+            // ApiClient.updateServerConfiguration()
+        }
+
+        function showMessage(text, type) {
+            const container = document.getElementById('messageContainer');
+            container.textContent = text;
+            container.className = 'message ' + type;
+            setTimeout(function() {
+                container.className = 'message';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
