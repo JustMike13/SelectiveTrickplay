@@ -1,18 +1,16 @@
-[
-  {
-    "name": "Selective Trickplay Generator",
-    "guid": "12345678-1234-1234-1234-123456789012",
-    "owner": "JustMike13",
-    "overview": "Automatically generates trickplay thumbnails for movies and episodes that are unwatched by at least one selected user.",
-    "description": "Generates trickplay only if any selected user has not watched the movie or episode, and trickplay does not already exist.",
-    "category": "Library",
-    "versions": [
-      {
-        "version": "1.0.0.0",
-        "sourceUrl": "https://github.com/JustMike13/SelectiveTrickplay/releases/download/v1.0.0/SelectiveTrickplay.zip",
-        "checksum": "e558269ffb0003c79bf5aa1b92b68fc0",
-        "targetAbi": "10.11.0.0"
-      }
-    ]
-  }
-]
+{
+  "name": "Selective Trickplay Generator",
+  "guid": "12345678-1234-1234-1234-123456789012",
+  "owner": "JustMike13",
+  "overview": "Automatically generates trickplay thumbnails for movies and episodes that are unwatched by at least one selected user.",
+  "description": "Generates trickplay only if any selected user has not watched the movie or episode, and trickplay does not already exist.",
+  "category": "Library",
+  "versions": [
+    {
+      "version": "1.0.0.0",
+      "sourceUrl": "https://github.com/JustMike13/SelectiveTrickplay/releases/download/v1.0.0/SelectiveTrickplay.zip",
+      "checksum": "e558269ffb0003c79bf5aa1b92b68fc0",
+      "targetAbi": "10.11.0.0"
+    }
+  ]
+}
