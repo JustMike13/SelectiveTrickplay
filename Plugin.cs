@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using MediaBrowser.Common.Configuration;
 using MediaBrowser.Common.Plugins;
 using MediaBrowser.Model.Plugins;
+using MediaBrowser.Model.Serialization;
 using SelectiveTrickplay.Configuration;
 
 namespace SelectiveTrickplay
@@ -16,8 +17,9 @@ namespace SelectiveTrickplay
         /// Initializes a new instance of the <see cref="Plugin"/> class.
         /// </summary>
         /// <param name="applicationPaths">Instance of the <see cref="IApplicationPaths"/> interface.</param>
-        public Plugin(IApplicationPaths applicationPaths)
-            : base(applicationPaths, null!)
+        /// <param name="xmlSerializer">Serializer used for plugin configuration.</param>
+        public Plugin(IApplicationPaths applicationPaths, IXmlSerializer xmlSerializer)
+            : base(applicationPaths, xmlSerializer)
         {
             Instance = this;
         }
