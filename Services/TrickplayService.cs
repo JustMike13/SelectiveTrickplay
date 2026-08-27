@@ -73,12 +73,16 @@ namespace SelectiveTrickplay.Services
 
             try
             {
+                // The task calls this only after confirming no trickplay data exists.
+                // Force generation so selected media is processed even when library-wide
+                // automatic trickplay extraction is disabled.
                 await _trickplayManager.RefreshTrickplayDataAsync(
                     video,
-                    false,
+                    true,
                     _libraryManager.GetLibraryOptions(video),
                     cancellationToken).ConfigureAwait(false);
-                return true;
+
+                return await HasTrickplayAsync(video, cancellationToken).ConfigureAwait(false);
             }
             catch (OperationCanceledException)
             {
