@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Jellyfin.Data.Enums;
 using MediaBrowser.Controller.Entities;
 using MediaBrowser.Controller.Library;
 using MediaBrowser.Model.Querying;
@@ -107,7 +108,10 @@ namespace SelectiveTrickplay.Tasks
             }
 
             var videos = _libraryManager
-                .GetItemList(new InternalItemsQuery())
+                .GetItemList(new InternalItemsQuery
+                {
+                    IncludeItemTypes = new[] { BaseItemKind.Movie, BaseItemKind.Episode }
+                })
                 .OfType<Video>()
                 .Where(video => video.SupportsPlayedStatus)
                 .ToList();

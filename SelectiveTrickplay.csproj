@@ -4,7 +4,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <RootNamespace>SelectiveTrickplay</RootNamespace>
     <AssemblyName>SelectiveTrickplay</AssemblyName>
-    <Version>1.0.5</Version>
+    <Version>1.0.6</Version>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
@@ -38,6 +38,10 @@
     </Reference>
     <Reference Include="Jellyfin.Database.Implementations">
       <HintPath>C:\Program Files\Jellyfin\Server\Jellyfin.Database.Implementations.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Jellyfin.Data">
+      <HintPath>C:\Program Files\Jellyfin\Server\Jellyfin.Data.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
