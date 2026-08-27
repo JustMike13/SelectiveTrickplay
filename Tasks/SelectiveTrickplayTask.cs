@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MediaBrowser.Controller.Entities;
 using MediaBrowser.Controller.Library;
+using MediaBrowser.Model.Querying;
 using MediaBrowser.Model.Tasks;
 using Microsoft.Extensions.Logging;
 using SelectiveTrickplay.Helpers;
@@ -84,10 +87,77 @@ namespace SelectiveTrickplay.Tasks
                 return;
             }
 
-            _logger.LogInformation("Processing trickplay for {SelectedUserCount} selected users", configuration.SelectedUserIds.Count);
-            
-            await Task.CompletedTask;
-            _logger.LogInformation("Selective Trickplay task completed.");
+            var selectedUserIds = new List<Guid>();
+            foreach (var selectedUserId in configuration.SelectedUserIds)
+            {
+                if (Guid.TryParse(selectedUserId, out var userId))
+                {
+                    selectedUserIds.Add(userId);
+                }
+                else
+                {
+                    _logger.LogWarning("Skipping invalid selected user ID {UserId}", selectedUserId);
+                }
+            }
+
+            if (selectedUserIds.Count == 0)
+            {
+                _logger.LogWarning("No valid users selected for trickplay generation. Task will not proceed.");
+                return;
+            }
+
+            var videos = _libraryManager
+                .GetItemList(new InternalItemsQuery())
+                .OfType<Video>()
+                .Where(video => video.SupportsPlayedStatus)
+                .ToList();
+
+            _logger.LogInformation(
+                "Processing {VideoCount} video items for {SelectedUserCount} selected users",
+                videos.Count,
+                selectedUserIds.Count);
+
+            for (var index = 0; index < videos.Count; index++)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                var video = videos[index];
+                _logger.LogInformation("Inspecting media item {ItemName} ({ItemId})", video.Name, video.Id);
+
+                var hasUnwatchedSelectedUser = selectedUserIds.Any(userId => !_userWatchHelper.HasUserWatched(video, userId));
+                if (!hasUnwatchedSelectedUser)
+                {
+                    _logger.LogInformation(
+                        "Skipped media item {ItemName} ({ItemId}): all selected users have played it",
+                        video.Name,
+                        video.Id);
+                }
+                else if (await _trickplayService.HasTrickplayAsync(video, cancellationToken).ConfigureAwait(false))
+                {
+                    _logger.LogInformation(
+                        "Skipped media item {ItemName} ({ItemId}): trickplay already exists",
+                        video.Name,
+                        video.Id);
+                }
+                else if (await _trickplayService.GenerateTrickplayAsync(video, cancellationToken).ConfigureAwait(false))
+                {
+                    _logger.LogInformation(
+                        "Generated trickplay for media item {ItemName} ({ItemId})",
+                        video.Name,
+                        video.Id);
+                }
+                else
+                {
+                    _logger.LogError(
+                        "Failed to generate trickplay for media item {ItemName} ({ItemId})",
+                        video.Name,
+                        video.Id);
+                }
+
+                progress.Report((index + 1) * 100d / videos.Count);
+            }
+
+            _logger.LogInformation("Selective Trickplay task completed after inspecting {VideoCount} video items.", videos.Count);
         }
     }
 }

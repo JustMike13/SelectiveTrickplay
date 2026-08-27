@@ -50,7 +50,7 @@ namespace SelectiveTrickplay.Helpers
                     var userData = item.UserData.FirstOrDefault(ud => ud.UserId == userId);
                     if (userData != null)
                     {
-                        return userData.Played || userData.PlayCount > 0;
+                        return userData.Played;
                     }
                 }
 

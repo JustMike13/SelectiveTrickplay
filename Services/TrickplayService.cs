@@ -1,8 +1,10 @@
 using System;
-using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediaBrowser.Controller.Entities;
+using MediaBrowser.Controller.Library;
+using MediaBrowser.Controller.Trickplay;
 using Microsoft.Extensions.Logging;
 
 namespace SelectiveTrickplay.Services
@@ -12,10 +14,17 @@ namespace SelectiveTrickplay.Services
     /// </summary>
     public class TrickplayService
     {
+        private readonly ILibraryManager _libraryManager;
         private readonly ILogger<TrickplayService> _logger;
+        private readonly ITrickplayManager _trickplayManager;
 
-        public TrickplayService(ILogger<TrickplayService> logger)
+        public TrickplayService(
+            ILibraryManager libraryManager,
+            ITrickplayManager trickplayManager,
+            ILogger<TrickplayService> logger)
         {
+            _libraryManager = libraryManager ?? throw new ArgumentNullException(nameof(libraryManager));
+            _trickplayManager = trickplayManager ?? throw new ArgumentNullException(nameof(trickplayManager));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -23,8 +32,9 @@ namespace SelectiveTrickplay.Services
         /// Checks if trickplay already exists for the specified item.
         /// </summary>
         /// <param name="item">The item to check.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>True if trickplay exists; otherwise false.</returns>
-        public bool HasTrickplay(BaseItem item)
+        public async Task<bool> HasTrickplayAsync(BaseItem item, CancellationToken cancellationToken)
         {
             if (item == null)
             {
@@ -33,18 +43,13 @@ namespace SelectiveTrickplay.Services
 
             try
             {
-                // Check if trickplay directory exists for video items
-                if (item is Video video && !string.IsNullOrEmpty(video.Path))
-                {
-                    var trickplayPath = Path.Combine(
-                        Path.GetDirectoryName(video.Path) ?? string.Empty,
-                        ".trickplay",
-                        video.Id.ToString());
-                    
-                    return Directory.Exists(trickplayPath);
-                }
-
-                return false;
+                cancellationToken.ThrowIfCancellationRequested();
+                var trickplayManifest = await _trickplayManager.GetTrickplayManifest(item).ConfigureAwait(false);
+                return trickplayManifest.Values.Any(resolutions => resolutions.Count > 0);
+            }
+            catch (OperationCanceledException)
+            {
+                throw;
             }
             catch (Exception ex)
             {
@@ -55,34 +60,34 @@ namespace SelectiveTrickplay.Services
 
         /// <summary>
         /// Generates trickplay for the specified item.
-        /// Note: This is a placeholder. Actual trickplay generation requires Jellyfin's ITrickplayManager.
         /// </summary>
-        /// <param name="item">The item to generate trickplay for.</param>
+        /// <param name="video">The video to generate trickplay for.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>A task representing the asynchronous operation.</returns>
-        public async Task GenerateTrickplay(BaseItem item, CancellationToken cancellationToken = default)
+        /// <returns>True if generation completed; otherwise false.</returns>
+        public async Task<bool> GenerateTrickplayAsync(Video video, CancellationToken cancellationToken)
         {
-            if (item == null)
+            if (video == null)
             {
-                throw new ArgumentNullException(nameof(item));
+                throw new ArgumentNullException(nameof(video));
             }
 
             try
             {
-                _logger.LogInformation("Trickplay generation requested for item {ItemId}: {ItemName}", item.Id, item.Name);
-                
-                // TODO: Integrate with Jellyfin's trickplay generation API when available
-                // For now, this is logged but not actually generated
-                
-                await Task.CompletedTask;
+                await _trickplayManager.RefreshTrickplayDataAsync(
+                    video,
+                    false,
+                    _libraryManager.GetLibraryOptions(video),
+                    cancellationToken).ConfigureAwait(false);
+                return true;
             }
             catch (OperationCanceledException)
             {
-                _logger.LogWarning("Trickplay generation cancelled for item {ItemId}: {ItemName}", item.Id, item.Name);
+                throw;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error generating trickplay for item {ItemId}: {ItemName} - {Message}", item.Id, item.Name, ex.Message);
+                _logger.LogError(ex, "Error generating trickplay for item {ItemId}: {ItemName}", video.Id, video.Name);
+                return false;
             }
         }
     }
