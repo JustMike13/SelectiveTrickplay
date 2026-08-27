@@ -1,17 +1,21 @@
+using MediaBrowser.Controller;
+using MediaBrowser.Controller.Plugins;
+using Microsoft.Extensions.DependencyInjection;
+using SelectiveTrickplay.Helpers;
+using SelectiveTrickplay.Services;
+
 namespace SelectiveTrickplay
 {
     /// <summary>
-    /// Service collection extensions for registering plugin services.
-    /// Note: Plugin services are registered manually in Jellyfin 10.11+
+    /// Registers services used by the plugin with Jellyfin's dependency injection container.
     /// </summary>
-    public static class PluginServiceRegistration
+    public class PluginServiceRegistrator : IPluginServiceRegistrator
     {
-        /// <summary>
-        /// Placeholder for future service registration.
-        /// </summary>
-        public static void RegisterServices()
+        /// <inheritdoc />
+        public void RegisterServices(IServiceCollection serviceCollection, IServerApplicationHost applicationHost)
         {
-            // Services will be registered through Jellyfin's DI container
+            serviceCollection.AddSingleton<TrickplayService>();
+            serviceCollection.AddSingleton<UserWatchHelper>();
         }
     }
 }

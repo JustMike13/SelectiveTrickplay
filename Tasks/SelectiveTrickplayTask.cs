@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using MediaBrowser.Controller.Library;
 using MediaBrowser.Model.Tasks;
 using Microsoft.Extensions.Logging;
-using SelectiveTrickplay.Configuration;
 using SelectiveTrickplay.Helpers;
 using SelectiveTrickplay.Services;
 
@@ -19,20 +18,17 @@ namespace SelectiveTrickplay.Tasks
         private readonly ILibraryManager _libraryManager;
         private readonly TrickplayService _trickplayService;
         private readonly UserWatchHelper _userWatchHelper;
-        private readonly PluginConfiguration _configuration;
         private readonly ILogger<SelectiveTrickplayTask> _logger;
 
         public SelectiveTrickplayTask(
             ILibraryManager libraryManager,
             TrickplayService trickplayService,
             UserWatchHelper userWatchHelper,
-            PluginConfiguration configuration,
             ILogger<SelectiveTrickplayTask> logger)
         {
             _libraryManager = libraryManager ?? throw new ArgumentNullException(nameof(libraryManager));
             _trickplayService = trickplayService ?? throw new ArgumentNullException(nameof(trickplayService));
             _userWatchHelper = userWatchHelper ?? throw new ArgumentNullException(nameof(userWatchHelper));
-            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -74,14 +70,21 @@ namespace SelectiveTrickplay.Tasks
         {
             _logger.LogInformation("Starting Selective Trickplay generation task");
 
+            var configuration = Plugin.Instance?.Configuration;
+            if (configuration is null)
+            {
+                _logger.LogError("Plugin configuration is unavailable. Task will not proceed.");
+                return;
+            }
+
             // Validate configuration
-            if (_configuration.SelectedUserIds == null || _configuration.SelectedUserIds.Count == 0)
+            if (configuration.SelectedUserIds == null || configuration.SelectedUserIds.Count == 0)
             {
                 _logger.LogWarning("No users selected for trickplay generation. Task will not proceed.");
                 return;
             }
 
-            _logger.LogInformation("Processing trickplay for {SelectedUserCount} selected users", _configuration.SelectedUserIds.Count);
+            _logger.LogInformation("Processing trickplay for {SelectedUserCount} selected users", configuration.SelectedUserIds.Count);
             
             await Task.CompletedTask;
             _logger.LogInformation("Selective Trickplay task completed.");
