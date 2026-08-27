@@ -4,7 +4,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <RootNamespace>SelectiveTrickplay</RootNamespace>
     <AssemblyName>SelectiveTrickplay</AssemblyName>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
@@ -40,6 +40,11 @@
       <HintPath>C:\Program Files\Jellyfin\Server\Jellyfin.Database.Implementations.dll</HintPath>
       <Private>False</Private>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Configuration\config.html" />
+    <EmbeddedResource Include="Configuration\config.html" />
   </ItemGroup>
 
   <Target Name="CreatePluginPackage" AfterTargets="Build" Condition="'$(Configuration)' == 'Release'">

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Selective Trickplay Generator</title>
+</head>
+<body>
+    <div id="configPage" data-role="page" class="page type-interior pluginConfigurationPage configPage" data-require="emby-button,emby-checkbox">
+        <div data-role="content">
+            <div class="content-primary">
+                <h1>Selective Trickplay Generator</h1>
+                <form class="configForm">
+                    <div class="verticalSection">
+                        <h2>Selected Users</h2>
+                        <div class="fieldDescription">
+                            Trickplay images are generated for movies and episodes that remain unwatched by at least one selected user.
+                        </div>
+                        <div id="userList" class="checkboxList"></div>
+                    </div>
+                    <div>
+                        <button is="emby-button" type="submit" class="raised button-submit block"><span>Save</span></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <script type="text/javascript">
+            var PluginConfig = {
+                pluginId: '12345678-1234-1234-1234-123456789012'
+            };
+
+            function populateUsers(users, selectedUserIds) {
+                var userList = document.querySelector('#userList');
+                userList.replaceChildren();
+
+                if (users.length === 0) {
+                    var emptyMessage = document.createElement('div');
+                    emptyMessage.className = 'fieldDescription';
+                    emptyMessage.textContent = 'No users are available.';
+                    userList.appendChild(emptyMessage);
+                    return;
+                }
+
+                users.forEach(function (user) {
+                    var label = document.createElement('label');
+                    label.className = 'checkboxContainer';
+
+                    var checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.className = 'selectedUser';
+                    checkbox.setAttribute('is', 'emby-checkbox');
+                    checkbox.setAttribute('data-user-id', user.Id);
+                    checkbox.checked = selectedUserIds.indexOf(user.Id) !== -1;
+
+                    var name = document.createElement('span');
+                    name.textContent = user.Name;
+
+                    label.appendChild(checkbox);
+                    label.appendChild(name);
+                    userList.appendChild(label);
+                });
+            }
+
+            document.querySelector('.configPage').addEventListener('pageshow', function () {
+                Dashboard.showLoadingMsg();
+
+                Promise.all([
+                    ApiClient.getPluginConfiguration(PluginConfig.pluginId),
+                    ApiClient.getUsers()
+                ]).then(function (results) {
+                    populateUsers(results[1], results[0].SelectedUserIds || []);
+                    Dashboard.hideLoadingMsg();
+                }).catch(function (error) {
+                    Dashboard.hideLoadingMsg();
+                    Dashboard.alert({
+                        title: 'Unable to load configuration',
+                        message: error.statusText || 'The user list could not be loaded.'
+                    });
+                });
+            });
+
+            document.querySelector('.configForm').addEventListener('submit', function (event) {
+                Dashboard.showLoadingMsg();
+
+                ApiClient.getPluginConfiguration(PluginConfig.pluginId).then(function (config) {
+                    config.SelectedUserIds = Array.prototype.filter.call(
+                        document.querySelectorAll('.selectedUser'),
+                        function (checkbox) { return checkbox.checked; })
+                        .map(function (checkbox) { return checkbox.getAttribute('data-user-id'); });
+
+                    return ApiClient.updatePluginConfiguration(PluginConfig.pluginId, config);
+                }).then(Dashboard.processPluginConfigurationUpdateResult).catch(function (error) {
+                    Dashboard.hideLoadingMsg();
+                    Dashboard.alert({
+                        title: 'Unable to save configuration',
+                        message: error.statusText || 'The selected users could not be saved.'
+                    });
+                });
+
+                event.preventDefault();
+                return false;
+            });
+        </script>
+    </div>
+</body>
+</html>
