@@ -157,13 +157,13 @@ Required packages:
 - MediaBrowser.Model
 - MediaBrowser.Common
 
-All should match Jellyfin's target version (currently 10.9.0).
+All should match Jellyfin's target version (currently 10.11.0).
 
 ## Building for Release
 
 ```bash
 dotnet build -c Release
-# Output: bin/Release/net8.0/UnwatchedTrickplay.dll
+# Output: bin/Release/net9.0/SelectiveTrickplay.zip
 ```
 
 ## Common Issues

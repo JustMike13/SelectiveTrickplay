@@ -9,7 +9,6 @@
     "TargetAbi": "10.11.0.0",
     "ArtifactUrl": "https://github.com/JustMike13/SelectiveTrickplay/releases/download/v1.0.0/SelectiveTrickplay.zip",
     "Changelog": "Initial release - Core functionality for selective trickplay generation, multi-user watch status checking, scheduled task with configurable users, comprehensive logging, and plugin configuration UI support.",
-    "Version": "1.0.0",
-    "ImageUrl": "https://raw.githubusercontent.com/JustMike13/SelectiveTrickplay/main/icon.png"
+    "Version": "1.0.0"
   }
 ]

@@ -1,13 +1,13 @@
 #!/bin/bash
-# Build script for Unwatched Trickplay Plugin
+# Build script for Selective Trickplay Plugin
 
-echo "Building Unwatched Trickplay Plugin..."
+echo "Building Selective Trickplay Plugin..."
 echo ""
 
 # Check if dotnet is installed
 if ! command -v dotnet &> /dev/null; then
-    echo "Error: .NET SDK not found. Please install .NET 8.0 SDK or later."
-    echo "Download from: https://dotnet.microsoft.com/download/dotnet/8.0"
+    echo "Error: .NET SDK not found. Please install .NET 9.0 SDK or later."
+    echo "Download from: https://dotnet.microsoft.com/download/dotnet/9.0"
     exit 1
 fi
 
@@ -31,10 +31,10 @@ fi
 echo ""
 echo "[3/3] Build Complete!"
 echo ""
-echo "Output: bin/Release/net8.0/UnwatchedTrickplay.dll"
+echo "Package: bin/Release/net9.0/SelectiveTrickplay.zip"
 echo ""
 echo "Next steps:"
-echo "1. Copy the DLL to: \$JELLYFIN_DATA/plugins/UnwatchedTrickplay/"
-echo "2. Restart Jellyfin"
-echo "3. Configure plugin settings"
+echo "1. Upload SelectiveTrickplay.zip to the v1.0.0 GitHub release."
+echo "2. Add the raw manifest URL to Jellyfin's plugin repositories."
+echo "3. Refresh the catalog and install the plugin."
 echo ""

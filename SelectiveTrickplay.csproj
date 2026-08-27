@@ -41,4 +41,17 @@
     </Reference>
   </ItemGroup>
 
+  <Target Name="CreatePluginPackage" AfterTargets="Build" Condition="'$(Configuration)' == 'Release'">
+    <PropertyGroup>
+      <PluginPackageDirectory>$(BaseIntermediateOutputPath)plugin-package</PluginPackageDirectory>
+      <PluginPackagePath>$(TargetDir)$(AssemblyName).zip</PluginPackagePath>
+    </PropertyGroup>
+
+    <RemoveDir Directories="$(PluginPackageDirectory)" />
+    <MakeDir Directories="$(PluginPackageDirectory)" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(PluginPackageDirectory)" />
+    <ZipDirectory SourceDirectory="$(PluginPackageDirectory)" DestinationFile="$(PluginPackagePath)" Overwrite="true" />
+    <RemoveDir Directories="$(PluginPackageDirectory)" />
+  </Target>
+
 </Project>

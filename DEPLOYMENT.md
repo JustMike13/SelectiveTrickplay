@@ -4,7 +4,7 @@
 
 ### Prerequisites
 
-- Jellyfin Server 10.9.0 or later
+- Jellyfin Server 10.11.0 or later
 - Access to Jellyfin data directory
 - Administrative access to Jellyfin configuration
 
@@ -23,7 +23,7 @@ chmod +x build.sh
 ./build.sh
 ```
 
-**Output file:** `bin/Release/net8.0/SelectiveTrickplay.dll`
+**Output file:** `bin/Release/net9.0/SelectiveTrickplay.zip`
 
 ### Step 2: Locate Jellyfin Data Directory
 
@@ -58,22 +58,22 @@ Volume mount → /config or /var/lib/jellyfin
 
 ```bash
 # Windows
-mkdir "<Jellyfin-Data>\plugins\UnwatchedTrickplay"
+mkdir "<Jellyfin-Data>\plugins\SelectiveTrickplay"
 
 # Linux/macOS
-mkdir -p "$JELLYFIN_DATA/plugins/UnwatchedTrickplay"
+mkdir -p "$JELLYFIN_DATA/plugins/SelectiveTrickplay"
 ```
 
 ### Step 4: Deploy the DLL
 
-Copy `UnwatchedTrickplay.dll` to the plugin directory:
+Copy `SelectiveTrickplay.dll` to the plugin directory:
 
 ```bash
 # Windows
-xcopy "UnwatchedTrickplay\bin\Release\net8.0\UnwatchedTrickplay.dll" "<Jellyfin-Data>\plugins\UnwatchedTrickplay\"
+xcopy "SelectiveTrickplay\bin\Release\net9.0\SelectiveTrickplay.dll" "<Jellyfin-Data>\plugins\SelectiveTrickplay\"
 
 # Linux/macOS
-cp UnwatchedTrickplay/bin/Release/net8.0/UnwatchedTrickplay.dll "$JELLYFIN_DATA/plugins/UnwatchedTrickplay/"
+cp SelectiveTrickplay/bin/Release/net9.0/SelectiveTrickplay.dll "$JELLYFIN_DATA/plugins/SelectiveTrickplay/"
 ```
 
 ### Step 5: Restart Jellyfin

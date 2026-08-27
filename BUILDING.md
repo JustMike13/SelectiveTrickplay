@@ -6,8 +6,8 @@ The SelectiveTrickplay plugin requires building from source as Jellyfin plugin p
 
 ## Prerequisites
 
-- **Jellyfin Server 10.9.0 or later** (installed locally on your build machine)
-- **.NET 8.0 SDK** or later
+- **Jellyfin Server 10.11.0 or later** (installed locally on your build machine)
+- **.NET 9.0 SDK** or later
 - **Git** (for cloning the repository)
 
 ## Step 1: Install Jellyfin Locally
@@ -26,7 +26,7 @@ The SelectiveTrickplay plugin requires building from source as Jellyfin plugin p
 sudo apt-get install jellyfin
 
 # Or from Docker
-docker run -it jellyfin/jellyfin:10.9.0
+docker run -it jellyfin/jellyfin:10.11.0
 ```
 
 Installation typically puts DLLs in:
@@ -88,7 +88,7 @@ dotnet build -c Release
 
 The compiled DLL will be at:
 ```
-bin/Release/net8.0/SelectiveTrickplay.dll
+bin/Release/net9.0/SelectiveTrickplay.zip
 ```
 
 ## Step 6: Deploy
@@ -102,7 +102,7 @@ C:\Users\[YourUsername]\AppData\Roaming\Jellyfin\plugins\SelectiveTrickplay\Sele
 
 ### Linux
 ```bash
-cp bin/Release/net8.0/SelectiveTrickplay.dll ~/.local/share/jellyfin/plugins/SelectiveTrickplay/
+cp bin/Release/net9.0/SelectiveTrickplay.dll ~/.local/share/jellyfin/plugins/SelectiveTrickplay/
 ```
 
 ## Troubleshooting
@@ -118,16 +118,16 @@ find / -name "MediaBrowser.Controller.dll" 2>/dev/null
 
 ### "Type or namespace not found"
 
-**Solution:** Make sure you're using .NET 8.0 SDK:
+**Solution:** Make sure you're using .NET 9.0 SDK:
 ```bash
-dotnet --version  # Should show 8.0.x or higher
+dotnet --version  # Should show 9.0.x or higher
 ```
 
 ### Build succeeds but plugin doesn't load
 
 **Common causes:**
 - DLL not in correct plugins folder
-- Jellyfin version mismatch (requires 10.9.0+)
+- Jellyfin version mismatch (requires 10.11.0+)
 - Missing dependencies in plugins folder
 
 **Fix:**
@@ -140,9 +140,9 @@ dotnet --version  # Should show 8.0.x or higher
 If you don't want to install Jellyfin locally:
 
 ```dockerfile
-FROM jellyfin/jellyfin:10.9.0 as builder
+FROM jellyfin/jellyfin:10.11.0 as builder
 
-RUN apt-get update && apt-get install -y dotnet-sdk-8.0 git
+RUN apt-get update && apt-get install -y dotnet-sdk-9.0 git
 
 WORKDIR /build
 RUN git clone https://github.com/JustMike13/SelectiveTrickplay.git .
@@ -153,7 +153,7 @@ RUN sed -i 's|C:\\.*MediaBrowser|/jellyfin/MediaBrowser|g' SelectiveTrickplay.cs
 # Build
 RUN dotnet build -c Release
 
-# Output: bin/Release/net8.0/SelectiveTrickplay.dll
+# Output: bin/Release/net9.0/SelectiveTrickplay.zip
 ```
 
 ## Next Steps

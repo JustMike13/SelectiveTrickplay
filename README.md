@@ -36,13 +36,13 @@ SelectiveTrickplay/
 
 ## Requirements
 
-- **.NET:** 8.0 or later
-- **Jellyfin:** 10.9.0 or later
+- **.NET:** 9.0 or later
+- **Jellyfin:** 10.11.0 or later
 - **NuGet Packages:**
-  - `Jellyfin.Common` (10.9.0+)
-  - `MediaBrowser.Controller` (10.9.0+)
-  - `MediaBrowser.Model` (10.9.0+)
-  - `MediaBrowser.Common` (10.9.0+)
+   - `Jellyfin.Common` (10.11.0+)
+   - `MediaBrowser.Controller` (10.11.0+)
+   - `MediaBrowser.Model` (10.11.0+)
+   - `MediaBrowser.Common` (10.11.0+)
 
 ## Building
 
@@ -50,7 +50,7 @@ SelectiveTrickplay/
 
 **Important:** Jellyfin plugin development requires referencing Jellyfin's server assemblies directly. Follow these steps:
 
-1. **Install Jellyfin Server 10.9.0+** on your development machine
+1. **Install Jellyfin Server 10.11.0+** on your development machine
 2. **Update SelectiveTrickplay.csproj** to reference local Jellyfin DLLs instead of NuGet packages
 
 Replace the current `<ItemGroup>` with package references:
@@ -73,18 +73,18 @@ Adjust paths to match your Jellyfin installation location.
 
 ### Prerequisites
 
-Install .NET 8.0 SDK:
+Install .NET 9.0 SDK:
 ```bash
 # Windows (via Chocolatey)
-choco install dotnet-sdk-8.0
+choco install dotnet-sdk-9.0
 
 # macOS (via Homebrew)
-brew install dotnet-sdk-8.0
+brew install dotnet-sdk-9.0
 
 # Linux (Ubuntu/Debian)
-sudo apt-get install dotnet-sdk-8.0
+sudo apt-get install dotnet-sdk-9.0
 
-# Or download from https://dotnet.microsoft.com/download/dotnet/8.0
+# Or download from https://dotnet.microsoft.com/download/dotnet/9.0
 ```
 
 ### Build Steps
@@ -106,7 +106,7 @@ sudo apt-get install dotnet-sdk-8.0
 
 4. **Output location:**
    ```
-   bin/Release/net8.0/SelectiveTrickplay.dll
+   bin/Release/net9.0/SelectiveTrickplay.zip
    ```
 
 ## Installation
@@ -125,7 +125,7 @@ sudo apt-get install dotnet-sdk-8.0
 
 3. **Copy the DLL:**
    ```bash
-   cp bin/Release/net8.0/SelectiveTrickplay.dll <Jellyfin-Data>/plugins/SelectiveTrickplay/
+   cp bin/Release/net9.0/SelectiveTrickplay.dll <Jellyfin-Data>/plugins/SelectiveTrickplay/
    ```
 
 4. **Restart Jellyfin:**
@@ -134,11 +134,10 @@ sudo apt-get install dotnet-sdk-8.0
 
 ### Method 2: Via Jellyfin Plugin Repository
 
-Once approved, the plugin can be installed directly from Jellyfin's plugin repository:
-1. Go to **Dashboard → Plugins → Catalog**
-2. Search for "Unwatched Trickplay"
-3. Click **Install**
-4. Restart Jellyfin
+1. Create the GitHub release `v1.0.0` and upload `bin/Release/net9.0/SelectiveTrickplay.zip` as `SelectiveTrickplay.zip`.
+2. In Jellyfin, open **Dashboard → Plugins → Repositories** and add `https://raw.githubusercontent.com/JustMike13/SelectiveTrickplay/main/manifest.json`.
+3. Open **Dashboard → Plugins → Catalog**, refresh the catalog, and search for "Selective Trickplay Generator".
+4. Install the plugin and restart Jellyfin.
 
 ## Configuration
 
@@ -244,7 +243,7 @@ The plugin provides comprehensive logging to help monitor and troubleshoot:
 
 ### Plugin Not Appearing in Settings
 
-1. Verify DLL is in correct directory: `<Jellyfin-Data>/plugins/UnwatchedTrickplay/`
+1. Verify DLL is in correct directory: `<Jellyfin-Data>/plugins/SelectiveTrickplay/`
 2. Check Jellyfin logs for loading errors
 3. Restart Jellyfin service
 4. Verify .NET 8.0 runtime is installed
@@ -278,7 +277,7 @@ MIT License - See LICENSE file for details
 ## Support
 
 For issues, feature requests, or documentation updates:
-- GitHub Issues: [https://github.com/example/selective-trickplay/issues](https://github.com/example/selective-trickplay/issues)
+- GitHub Issues: [https://github.com/JustMike13/SelectiveTrickplay/issues](https://github.com/JustMike13/SelectiveTrickplay/issues)
 - Jellyfin Forums: [https://jellyfin.org/](https://jellyfin.org/)
 
 ## Version History
