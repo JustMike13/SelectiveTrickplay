@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using MediaBrowser.Common.Configuration;
 using MediaBrowser.Common.Plugins;
 using MediaBrowser.Model.Plugins;
@@ -9,7 +10,7 @@ namespace SelectiveTrickplay
     /// <summary>
     /// Main plugin class for Selective Trickplay Generator.
     /// </summary>
-    public class Plugin : BasePlugin<PluginConfiguration>
+    public class Plugin : BasePlugin<PluginConfiguration>, IHasWebPages
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Plugin"/> class.
@@ -26,6 +27,16 @@ namespace SelectiveTrickplay
 
         /// <inheritdoc />
         public override Guid Id => Guid.Parse("12345678-1234-1234-1234-123456789012");
+
+        /// <inheritdoc />
+        public IEnumerable<PluginPageInfo> GetPages()
+        {
+            yield return new PluginPageInfo
+            {
+                Name = Name,
+                EmbeddedResourcePath = GetType().Namespace + ".Configuration.config.html"
+            };
+        }
 
         /// <summary>
         /// Gets the current plugin instance.
