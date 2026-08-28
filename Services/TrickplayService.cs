@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using MediaBrowser.Controller.Entities;
 using MediaBrowser.Controller.Library;
 using MediaBrowser.Controller.Trickplay;
-using Microsoft.Extensions.Logging;
 
 namespace SelectiveTrickplay.Services
 {
@@ -15,13 +14,19 @@ namespace SelectiveTrickplay.Services
     public class TrickplayService
     {
         private readonly ILibraryManager _libraryManager;
-        private readonly ILogger<TrickplayService> _logger;
+        private readonly SelectiveTrickplayLogger _logger;
         private readonly ITrickplayManager _trickplayManager;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TrickplayService"/> class.
+        /// </summary>
+        /// <param name="libraryManager">Library manager for retrieving library options.</param>
+        /// <param name="trickplayManager">Manager for trickplay data.</param>
+        /// <param name="logger">Plugin-specific logger.</param>
         public TrickplayService(
             ILibraryManager libraryManager,
             ITrickplayManager trickplayManager,
-            ILogger<TrickplayService> logger)
+            SelectiveTrickplayLogger logger)
         {
             _libraryManager = libraryManager ?? throw new ArgumentNullException(nameof(libraryManager));
             _trickplayManager = trickplayManager ?? throw new ArgumentNullException(nameof(trickplayManager));
@@ -53,7 +58,7 @@ namespace SelectiveTrickplay.Services
             }
             catch (Exception ex)
             {
-                _logger.LogWarning(ex, "Error checking trickplay for item {ItemId}: {Message}", item.Id, ex.Message);
+                _logger.LogWarning(string.Format("Error checking trickplay for item {0}: {1}", item.Id, ex.Message));
                 return false;
             }
         }
@@ -90,7 +95,7 @@ namespace SelectiveTrickplay.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error generating trickplay for item {ItemId}: {ItemName}", video.Id, video.Name);
+                _logger.LogError(string.Format("Error generating trickplay for item {0}: {1}", video.Id, video.Name), ex);
                 return false;
             }
         }

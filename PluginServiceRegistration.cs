@@ -14,6 +14,7 @@ namespace SelectiveTrickplay
         /// <inheritdoc />
         public void RegisterServices(IServiceCollection serviceCollection, IServerApplicationHost applicationHost)
         {
+            serviceCollection.AddSingleton<SelectiveTrickplayLogger>();
             serviceCollection.AddSingleton<TrickplayService>();
             serviceCollection.AddSingleton<UserWatchHelper>();
         }
