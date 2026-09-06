@@ -132,42 +132,48 @@ namespace SelectiveTrickplay.Tasks
                 cancellationToken.ThrowIfCancellationRequested();
 
                 var video = videos[index];
-                _logger.LogInformation(string.Format("Inspecting media item {0} ({1})", video.Name, video.Id));
+                var mediaItem = DescribeVideo(video);
+                _logger.LogInformation(string.Format("Inspecting media item {0}", mediaItem));
 
                 var hasUnwatchedSelectedUser = selectedUserIds.Any(userId => !_userWatchHelper.HasUserWatched(video, userId));
                 if (!hasUnwatchedSelectedUser)
                 {
                     _logger.LogInformation(string.Format(
-                        "Skipped media item {0} ({1}): all selected users have played it",
-                        video.Name,
-                        video.Id));
+                        "Skipped media item {0}: all selected users have played it",
+                        mediaItem));
                 }
                 else if (await _trickplayService.HasTrickplayAsync(video, cancellationToken).ConfigureAwait(false))
                 {
                     _logger.LogInformation(string.Format(
-                        "Skipped media item {0} ({1}): trickplay already exists",
-                        video.Name,
-                        video.Id));
+                        "Skipped media item {0}: trickplay already exists",
+                        mediaItem));
                 }
                 else if (await _trickplayService.GenerateTrickplayAsync(video, cancellationToken).ConfigureAwait(false))
                 {
                     _logger.LogInformation(string.Format(
-                        "Generated trickplay for media item {0} ({1})",
-                        video.Name,
-                        video.Id));
+                        "Generated trickplay for media item {0}",
+                        mediaItem));
                 }
                 else
                 {
                     _logger.LogError(string.Format(
-                        "Failed to generate trickplay for media item {0} ({1})",
-                        video.Name,
-                        video.Id));
+                        "Failed to generate trickplay for media item {0}",
+                        mediaItem));
                 }
 
                 progress.Report((index + 1) * 100d / videos.Count);
             }
 
             _logger.LogInformation(string.Format("Selective Trickplay task completed after inspecting {0} video items.", videos.Count));
+        }
+
+        private static string DescribeVideo(Video video)
+        {
+            return string.Format(
+                "{0} ({1}) [Path: {2}]",
+                video.Name,
+                video.Id,
+                video.Path ?? "(unavailable)");
         }
     }
 }

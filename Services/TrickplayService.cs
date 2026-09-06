@@ -58,7 +58,11 @@ namespace SelectiveTrickplay.Services
             }
             catch (Exception ex)
             {
-                _logger.LogWarning(string.Format("Error checking trickplay for item {0}: {1}", item.Id, ex.Message));
+                _logger.LogWarning(string.Format(
+                    "Error checking trickplay for item {0} [Path: {1}]: {2}",
+                    item.Id,
+                    item.Path ?? "(unavailable)",
+                    ex.Message));
                 return false;
             }
         }
@@ -79,11 +83,10 @@ namespace SelectiveTrickplay.Services
             try
             {
                 // The task calls this only after confirming no trickplay data exists.
-                // Force generation so selected media is processed even when library-wide
-                // automatic trickplay extraction is disabled.
+                // Preserve Jellyfin's normal refresh behavior and existing generated data.
                 await _trickplayManager.RefreshTrickplayDataAsync(
                     video,
-                    true,
+                    false,
                     _libraryManager.GetLibraryOptions(video),
                     cancellationToken).ConfigureAwait(false);
 
@@ -95,7 +98,11 @@ namespace SelectiveTrickplay.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(string.Format("Error generating trickplay for item {0}: {1}", video.Id, video.Name), ex);
+                _logger.LogError(string.Format(
+                    "Error generating trickplay for item {0} ({1}) [Path: {2}]",
+                    video.Id,
+                    video.Name,
+                    video.Path ?? "(unavailable)"), ex);
                 return false;
             }
         }
